@@ -6,10 +6,12 @@
     <title>Pricing Strategy Decision Tool</title>
     <style>
         :root {
-            --primary: #059669; /* Changed to a nice green theme */
+            --primary: #059669;
+            --primary-dark: #047857;
             --background: #f0fdf4;
             --card: #ffffff;
             --text: #1e293b;
+            --border: #cbd5e1;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -26,6 +28,55 @@
             border-bottom: 2px solid var(--primary);
             padding-bottom: 10px;
         }
+        
+        /* Tabs Styling */
+        .tabs-container {
+            background: var(--card);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .tab-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #e2e8f0;
+        }
+        .tab-btn {
+            flex: 1 1 auto;
+            background: none;
+            border: none;
+            padding: 12px 15px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #475569;
+            transition: background 0.2s, color 0.2s;
+            margin: 0;
+            border-radius: 0;
+            font-size: 0.9em;
+        }
+        .tab-btn:hover {
+            background-color: #cbd5e1;
+        }
+        .tab-btn.active {
+            background-color: var(--card);
+            color: var(--primary);
+            border-top: 3px solid var(--primary);
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Scenarios Styling */
         .intro-text {
             background: #fff;
             padding: 15px;
@@ -47,26 +98,29 @@
             font-size: 1.1em;
             margin-bottom: 10px;
         }
-        select, button {
+        select {
             padding: 10px;
             border-radius: 6px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--border);
             margin-top: 10px;
             font-size: 1em;
             width: 100%;
         }
-        button {
+        .submit-btn {
             background-color: var(--primary);
             color: white;
             border: none;
             cursor: pointer;
-            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            width: 100%;
+            margin-top: 10px;
             font-weight: bold;
             font-size: 1.1em;
             transition: background 0.3s;
         }
-        button:hover {
-            background-color: #047857;
+        .submit-btn:hover {
+            background-color: var(--primary-dark);
         }
         #results {
             margin-top: 20px;
@@ -83,19 +137,71 @@
 
     <h1>Pricing Strategy Assessment</h1>
     
+    <!-- Tabbed Explanation Section -->
+    <div class="tabs-container">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="openTab(event, 'tab-profit')">Profit & Sales</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-market')">Market Share</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-competitive')">Competitive Effect</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-image')">Image Enhancement</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-costs')">Costs & Demand</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-env')">Environmental Factors</button>
+        </div>
+
+        <div id="tab-profit" class="tab-content active">
+            <h3>Profit and Sales</h3>
+            <p>Setting pricing objectives based on desired profit margins or maximizing sales volume. For example, marketers might sacrifice sales on one item to encourage customers to purchase a different product that carries a higher profit margin (like a store brand).</p>
+        </div>
+        <div id="tab-market" class="tab-content">
+            <h3>Market Share</h3>
+            <p>Pricing products to capture a specific segment of the market or a larger percentage of total industry sales. When competition gets intense and the market shrinks, firms often resort to price reductions or bundle pricing to maintain their market share.</p>
+        </div>
+        <div id="tab-competitive" class="tab-content">
+            <h3>Competitive Effect (Market-Based Pricing)</h3>
+            <p>Pricing a product based on (above, below, or the same as) the competition's pricing. Marketers deliberately adjust prices to dilute a competitor's marketing efforts, preempt their pricing changes, or safely maintain profitability in an oligopoly (like airlines).</p>
+        </div>
+        <div id="tab-image" class="tab-content">
+            <h3>Image Enhancement</h3>
+            <p>Using higher prices to communicate prestige, high quality, or a cutting-edge reputation. For "prestige products" (like luxury cars or designer bags), a higher price actually increases consumer desirability among status-conscious buyers.</p>
+        </div>
+        <div id="tab-costs" class="tab-content">
+            <h3>Costs and Demand</h3>
+            <p>Understanding the internal math of the product. This includes estimating consumer demand at different price points (price elasticity) and combining variable costs (per-unit costs that fluctuate) with fixed costs to determine the minimum break-even price.</p>
+        </div>
+        <div id="tab-env" class="tab-content">
+            <h3>Environmental Factors</h3>
+            <p>Adjusting prices based on broad external influences. This includes adapting to economic trends (inflation, recessions/business cycle), responding to government regulations, adapting to the international environment, and shifting consumer trends.</p>
+        </div>
+    </div>
+
     <div class="intro-text">
-        <strong>Instructions:</strong> Read each business scenario below and identify which of the 6 core pricing components is driving the decision. 
+        <strong>Instructions:</strong> Use the reference tabs above to review the Solomon pricing concepts. Then, read each business scenario below and identify which of the 6 core pricing components is driving the decision. 
         <em>Note: Some components may be the answer to more than one scenario.</em>
     </div>
 
     <form id="pricingForm">
         <div id="scenarios-container"></div>
-        <button type="button" onclick="evaluateDecisions()">Submit Decisions</button>
+        <button type="button" class="submit-btn" onclick="evaluateDecisions()">Submit Decisions</button>
     </form>
 
     <div id="results"></div>
 
     <script>
+        // Tab switching logic
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
         // The 6 main components as options
         const components = [
             "Profit and Sales",
