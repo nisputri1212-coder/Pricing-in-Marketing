@@ -17,7 +17,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background);
             color: var(--text);
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
             padding: 20px;
             line-height: 1.6;
@@ -54,6 +54,7 @@
             margin: 0;
             border-radius: 0;
             font-size: 0.9em;
+            border-bottom: 3px solid transparent;
         }
         .tab-btn:hover {
             background-color: #cbd5e1;
@@ -61,7 +62,7 @@
         .tab-btn.active {
             background-color: var(--card);
             color: var(--primary);
-            border-top: 3px solid var(--primary);
+            border-bottom: 3px solid var(--primary);
         }
         .tab-content {
             display: none;
@@ -74,6 +75,33 @@
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+
+        /* Resources List Styling */
+        .resource-list {
+            list-style: none;
+            padding: 0;
+        }
+        .resource-list li {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-left: 4px solid var(--primary);
+            border-radius: 0 6px 6px 0;
+        }
+        .resource-list a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+        .resource-list a:hover {
+            text-decoration: underline;
+        }
+        .resource-desc {
+            margin-top: 5px;
+            font-size: 0.95em;
+            color: #475569;
         }
 
         /* Scenarios Styling */
@@ -146,6 +174,7 @@
             <button class="tab-btn" onclick="openTab(event, 'tab-image')">Image Enhancement</button>
             <button class="tab-btn" onclick="openTab(event, 'tab-costs')">Costs & Demand</button>
             <button class="tab-btn" onclick="openTab(event, 'tab-env')">Environmental Factors</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-videos')" style="background-color:#dbeafe; color:#1e40af;">Advanced Tactics (Videos & Articles)</button>
         </div>
 
         <div id="tab-profit" class="tab-content active">
@@ -172,11 +201,38 @@
             <h3>Environmental Factors</h3>
             <p>Adjusting prices based on broad external influences. This includes adapting to economic trends (inflation, recessions/business cycle), responding to government regulations, adapting to the international environment, and shifting consumer trends.</p>
         </div>
+        
+        <!-- NEW TAB FOR EXTERNAL RESOURCES -->
+        <div id="tab-videos" class="tab-content">
+            <h3>Advanced Pricing Tactics & Case Studies</h3>
+            <p>Explore these real-world examples and deep dives into specialized pricing strategies:</p>
+            <ul class="resource-list">
+                <li>
+                    <a href="https://www.youtube.com/watch?v=9X68dm92HVI" target="_blank">📺 Decoy Psychological Pricing</a>
+                    <div class="resource-desc"><strong>What it is:</strong> Introducing a seemingly less attractive "third option" specifically designed to push customers toward a target choice, making it look like a much better deal.</div>
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/watch?v=ZUG9qYTJMsI" target="_blank">📺 Penetration Pricing (Value vs. Established Price)</a>
+                    <div class="resource-desc"><strong>What it is:</strong> A strategy where a business enters a market with an exceptionally low initial price to rapidly attract a large number of customers and build market share before eventually raising prices.</div>
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/watch?v=_S2lYXf-uu0" target="_blank">📺 Captive Product Pricing (Razor-and-Blades)</a>
+                    <div class="resource-desc"><strong>What it is:</strong> Selling a core product (like a razor or a printer) at a very low price, but generating high profit margins on the necessary accessories (blades or ink cartridges) required to use it.</div>
+                </li>
+                <li>
+                    <a href="https://www.ted.com/talks/rory_sutherland_perspective_is_everything" target="_blank">🎤 Value-Based Pricing & Perception (TED Talk)</a>
+                    <div class="resource-desc"><strong>What it is:</strong> Advertising executive Rory Sutherland explains how perceived value, perspective, and psychology are often more important than the actual material cost when pricing and marketing a product.</div>
+                </li>
+                <li>
+                    <a href="https://www.tutor2u.net/economics/reference/what-is-surge-pricing-i-a-level-and-ib-economics" target="_blank">📖 Dynamic / Surge Pricing</a>
+                    <div class="resource-desc"><strong>What it is:</strong> Utilizing algorithms to adjust prices continuously in real-time based on fluctuating demand curves, heavily used by ride-sharing apps (like Uber) during rush hours or poor weather.</div>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="intro-text">
         <strong>Instructions:</strong> Use the reference tabs above to review the Solomon pricing concepts. Then, read each business scenario below and identify which of the 6 core pricing components is driving the decision. 
-        <em>Note: Some components may be the answer to more than one scenario.</em>
     </div>
 
     <form id="pricingForm">
