@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Strategy Decision Tool</title>
+    <style>
+        :root {
+            --primary: #059669; /* Changed to a nice green theme */
+            --background: #f0fdf4;
+            --card: #ffffff;
+            --text: #1e293b;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+        .intro-text {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .scenario-card {
+            background: var(--card);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary);
+        }
+        .scenario-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        select, button {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            margin-top: 10px;
+            font-size: 1em;
+            width: 100%;
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #047857;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+        }
+        .correct { background-color: #dcfce7; border: 2px solid #22c55e; color: #166534; }
+        .incorrect { background-color: #fee2e2; border: 2px solid #ef4444; color: #991b1b; }
+    </style>
+</head>
+<body>
+
+    <h1>Pricing Strategy Assessment</h1>
+    
+    <div class="intro-text">
+        <strong>Instructions:</strong> Read each business scenario below and identify which of the 6 core pricing components is driving the decision. 
+        <em>Note: Some components may be the answer to more than one scenario.</em>
+    </div>
+
+    <form id="pricingForm">
+        <div id="scenarios-container"></div>
+        <button type="button" onclick="evaluateDecisions()">Submit Decisions</button>
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+        // The 6 main components as options
+        const components = [
+            "Profit and Sales",
+            "Market Share",
+            "Competitive Effect",
+            "Image Enhancement",
+            "Costs and Demand",
+            "Environmental Factors"
+        ];
+
+        const scenarios = [
+            {
+                title: "Scenario 1",
+                desc: "You launch a new line of smartwatches and price them specifically to guarantee a 25% profit margin per unit to meet quarterly financial goals.",
+                answer: "Profit and Sales"
+            },
+            {
+                title: "Scenario 2",
+                desc: "You offer a streaming service and bundle music, video, and gaming for one low combined price to aggressively capture a larger percentage of the entertainment market.",
+                answer: "Market Share"
+            },
+            {
+                title: "Scenario 3",
+                desc: "A rival coffee shop announces a massive 'half-price' week. You deliberately drop your prices the day before to dilute their marketing efforts and keep your customers.",
+                answer: "Competitive Effect"
+            },
+            {
+                title: "Scenario 4",
+                desc: "You introduce a premium electric sports car. You set the price above $150,000 to communicate prestige and a cutting-edge reputation to status-conscious buyers.",
+                answer: "Image Enhancement"
+            },
+            {
+                title: "Scenario 5",
+                desc: "Your factory rent increases drastically. You must calculate your new fixed and variable expenses to find out the new break-even price for your shoes.",
+                answer: "Costs and Demand"
+            },
+            {
+                title: "Scenario 6",
+                desc: "You notice that when you raise the price of your organic apples by just 5%, customer demand plummets by 20%, showing high price elasticity.",
+                answer: "Costs and Demand"
+            },
+            {
+                title: "Scenario 7",
+                desc: "A severe economic recession hits, shifting consumer trends towards saving. You adjust by lowering prices and introducing a budget-friendly product line.",
+                answer: "Environmental Factors"
+            },
+            {
+                title: "Scenario 8",
+                desc: "The government introduces a new mandatory tax on sugary beverages. You adjust the pricing of your soda products to account for this new regulation.",
+                answer: "Environmental Factors"
+            }
+        ];
+
+        const container = document.getElementById('scenarios-container');
+
+        // Build dropdown options from the components array
+        const optionsHTML = components.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+
+        scenarios.forEach((scenario, index) => {
+            let html = `
+                <div class="scenario-card">
+                    <div class="scenario-title">${scenario.title}</div>
+                    <p>${scenario.desc}</p>
+                    <label><strong>Select Driving Component:</strong></label>
+                    <select id="q${index}">
+                        <option value="">-- Choose a Component --</option>
+                        ${optionsHTML}
+                    </select>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+
+        function evaluateDecisions() {
+            let score = 0;
+            let resultsDiv = document.getElementById('results');
+            
+            scenarios.forEach((scenario, index) => {
+                let userChoice = document.getElementById(`q${index}`).value;
+                let selectElement = document.getElementById(`q${index}`);
+                
+                // Reset styling
+                selectElement.style.borderColor = "#cbd5e1";
+                selectElement.style.backgroundColor = "#fff";
+
+                if(userChoice === scenario.answer) {
+                    score++;
+                    selectElement.style.borderColor = "#22c55e"; // Green border for correct
+                    selectElement.style.backgroundColor = "#f0fdf4";
+                } else if (userChoice !== "") {
+                    selectElement.style.borderColor = "#ef4444"; // Red border for incorrect
+                    selectElement.style.backgroundColor = "#fef2f2";
+                }
+            });
+
+            resultsDiv.style.display = 'block';
+            if(score === 8) {
+                resultsDiv.className = 'correct';
+                resultsDiv.innerHTML = `<h2>Excellent! Score: ${score}/8</h2><p>You perfectly identified all the pricing components.</p>`;
+            } else {
+                resultsDiv.className = 'incorrect';
+                resultsDiv.innerHTML = `<h2>Needs Review. Score: ${score}/8</h2><p>Check the red highlights above and try again!</p>`;
+            }
+            
+            // Scroll to bottom to see results
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
